@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 import Button from "react-bootstrap/Button";
@@ -9,6 +9,10 @@ const Welcome = () => {
     let [room, setRoom] = useState("");
     let [name, setName] = useState("");
     let [warning, showWarning] = useState(false);
+
+    useEffect(() => {
+        document.title = "VideoSync - Welcome";
+    }, []);
 
     return (
         <div id="welcome-body">
