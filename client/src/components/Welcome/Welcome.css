@@ -1,0 +1,26 @@
+#sectionCard {
+    /* positioning */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    /* colours */
+    background-color: white;
+    /* box */
+    border: 1px solid gray;
+    padding: 2rem;
+    box-shadow: 5px 10px 18px #888888;
+}
+
+body {
+    background-color: lightpink;
+}
+
+h1 {
+    font-weight: bold;
+}
+
+Button {
+    margin-top: 10px;
+}

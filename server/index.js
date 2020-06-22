@@ -7,7 +7,7 @@ const http = require("http").createServer(app);
 const port = process.env.PORT || 5000;
 
 app.get("/", (req, res) => {
-    res.send("Express loaded");
+    res.send(`Express loaded on port ${port}`);
 });
 
 http.listen(port, () => {

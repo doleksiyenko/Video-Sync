@@ -1,8 +1,8 @@
 import React from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
-import Welcome from "./components/Welcome";
-import VideoSync from "./components/VideoSync";
+import Welcome from "./components/Welcome/Welcome";
+import VideoSync from "./components/VideoSync/VideoSync";
 
 const App = () => {
     return (
