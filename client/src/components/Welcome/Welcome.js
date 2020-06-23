@@ -8,7 +8,7 @@ import "./Welcome.css";
 const Welcome = () => {
     let [room, setRoom] = useState("");
     let [name, setName] = useState("");
-    let [warning, showWarning] = useState(false);
+    // let [warning, showWarning] = useState(false);
 
     useEffect(() => {
         document.title = "VideoSync - Welcome";
@@ -49,7 +49,7 @@ const Welcome = () => {
                     ) : (
                         <Button
                             className="disabled join-button"
-                            onClick={() => showWarning(true)}
+                            // onClick={() => showWarning(true)}
                         >
                             Join
                         </Button>

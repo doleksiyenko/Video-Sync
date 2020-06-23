@@ -18,20 +18,19 @@ app.get("/", (req, res) => {
 // socket.io
 
 io.on("connection", (socket) => {
-    console.log("A user has connected.");
-
     // when the user sends a join request to the room
     socket.on("join", (name, room) => {
         // add a user to the room
         let user = addUser(name, room, socket.id);
+        console.log(`${user.name} has connected to ${user.room}`);
         console.log(user);
         // emit a message to the room that the user has joined. Show this in the chat window.
         socket.join(user.room);
     });
 
     socket.on("disconnect", () => {
-        console.log("A user has disconnected.");
-        socket.leave(user.room);
+        const user = getUser(socket.id);
+        console.log(`${user.name} has disconnected from ${user.room}`);
     });
 });
 
