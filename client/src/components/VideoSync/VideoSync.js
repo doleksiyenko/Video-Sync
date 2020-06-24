@@ -7,12 +7,12 @@ import Input from "../Input/Input";
 import io from "socket.io-client";
 import queryString from "query-string";
 
+let socket;
+
 const VideoSync = ({ location }) => {
     const serverLocation = "localhost:5000";
     let [messages, setMessages] = useState([]);
     let [inputMessage, setInputMessage] = useState("");
-
-    let socket;
 
     useEffect(() => {
         let user = queryString.parse(location.search);
@@ -24,25 +24,27 @@ const VideoSync = ({ location }) => {
         return () => {
             socket.emit("disconnect");
             socket.off();
+            socket.close();
         };
     }, [location.search, serverLocation]);
 
-    useEffect(
-        () =>
-            // set the messages here
-            socket.on("message", (message) => {
-                setMessages([...messages, message]);
-            }),
-        [messages]
-    );
+    useEffect(() => {
+        // set the messages here
+        socket.on("message", (message) => {
+            setMessages([...messages, message]);
+            console.log(message);
+        });
+    }, [messages]);
 
     const sendMessage = (e) => {
-        e.preventDefault();
-        console.log(e.target.value);
+        if (e.target.value.trim() !== "") {
+            socket.emit("sendMessage", e.target.value);
+            e.target.value = "";
+        }
     };
 
     return (
-        <div>
+        <div id="sync-body">
             <h1>Video Sync</h1>
             <Input
                 inputMessage={inputMessage}
@@ -54,5 +56,3 @@ const VideoSync = ({ location }) => {
 };
 
 export default VideoSync;
-
-// main socket.io logic in here

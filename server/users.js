@@ -2,9 +2,12 @@ let users = [];
 
 addUser = (name, room, id) => {
     // add a user to their room
+    let userName = name.trim();
+    let userRoom = room.trim();
+
     user = {
-        name,
-        room,
+        name: userName,
+        room: userRoom,
         id,
     };
 
