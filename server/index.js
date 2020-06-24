@@ -23,12 +23,12 @@ io.on("connection", (socket) => {
     socket.on("join", (name, room) => {
         // add a user to the room
         user = addUser(name, room, socket.id);
-        console.log(`${user.name} has connected to ${user.room}`);
+        console.log(`${user.name} has connected to ${user.room}.`);
         console.log(user);
         // emit a message to the room that the user has joined. Show this in the chat window.
         socket.emit(
             "message",
-            `You have joined the room "${user.room}" with the name "${user.name}"`
+            `You have joined the room "${user.room}" with the name "${user.name}".`
         );
         socket.broadcast
             .to(user.room)

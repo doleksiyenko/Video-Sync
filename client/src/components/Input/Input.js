@@ -1,14 +1,16 @@
 import React from "react";
+import "./Input.css";
 
 const Input = ({ inputMessage, setInputMessage, sendMessage }) => {
     return (
-        <div>
+        <div className="message-input">
             <form
                 onSubmit={(e) => {
                     e.preventDefault();
                 }}
             >
                 <input
+                    id="messageInput"
                     value={inputMessage}
                     placeholder="Enter A Message"
                     onChange={(e) => setInputMessage(e.target.value)}

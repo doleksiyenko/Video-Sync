@@ -39,14 +39,13 @@ const VideoSync = ({ location }) => {
     const sendMessage = (e) => {
         if (e.target.value.trim() !== "") {
             socket.emit("sendMessage", e.target.value);
-            console.log(e.target.value);
             setInputMessage("");
         }
     };
 
     return (
         <div id="sync-body">
-            <h1>Video Sync</h1>
+            <h1 style={{ margin: 20 }}>Video Sync</h1>
             <ChatWindow
                 inputMessage={inputMessage}
                 setInputMessage={setInputMessage}

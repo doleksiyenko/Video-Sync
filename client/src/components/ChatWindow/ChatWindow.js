@@ -13,8 +13,8 @@ const ChatWindow = ({
     sendMessage,
 }) => {
     return (
-        <div>
-            <ScrollToBottom className="chatbox">
+        <div className="chat-box">
+            <ScrollToBottom className="message-box">
                 {messages.map((message, i) => (
                     <Message key={i} message={message}></Message>
                 ))}
