@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 
 import "./VideoSync.css";
-import Input from "../Input/Input";
 
 //modules
 import io from "socket.io-client";
 import queryString from "query-string";
+import ChatWindow from "../ChatWindow/ChatWindow";
 
 let socket;
 
@@ -29,28 +29,30 @@ const VideoSync = ({ location }) => {
     }, [location.search, serverLocation]);
 
     useEffect(() => {
-        // set the messages here
         socket.on("message", (message) => {
             setMessages([...messages, message]);
-            console.log(message);
+            // this is to prevent multiple listeners forming for every single message change
+            socket.off();
         });
     }, [messages]);
 
     const sendMessage = (e) => {
         if (e.target.value.trim() !== "") {
             socket.emit("sendMessage", e.target.value);
-            e.target.value = "";
+            console.log(e.target.value);
+            setInputMessage("");
         }
     };
 
     return (
         <div id="sync-body">
             <h1>Video Sync</h1>
-            <Input
+            <ChatWindow
                 inputMessage={inputMessage}
                 setInputMessage={setInputMessage}
                 sendMessage={sendMessage}
-            ></Input>
+                messages={messages}
+            ></ChatWindow>
         </div>
     );
 };

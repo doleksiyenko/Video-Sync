@@ -26,6 +26,13 @@ io.on("connection", (socket) => {
         console.log(`${user.name} has connected to ${user.room}`);
         console.log(user);
         // emit a message to the room that the user has joined. Show this in the chat window.
+        socket.emit(
+            "message",
+            `You have joined the room "${user.room}" with the name "${user.name}"`
+        );
+        socket.broadcast
+            .to(user.room)
+            .emit("message", `${user.name} has joined the session!`);
         socket.join(user.room);
     });
 
@@ -42,6 +49,9 @@ io.on("connection", (socket) => {
         if (user) {
             removeUser(socket.id);
             console.log(`${user.name} has disconnected from ${user.room}`);
+            socket.broadcast
+                .to(user.room)
+                .emit("message", `"${user.name}" has left the session!`);
         }
     });
 });
