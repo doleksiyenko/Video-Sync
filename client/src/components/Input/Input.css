@@ -1,5 +1,9 @@
 #messageInput {
     width: 100%;
     padding-left: 0.5em;
-    border: 1px solid black;
+    border: 2px solid rgb(26, 0, 97);
+    border-top: 0;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    font-size: 1.6em;
 }

@@ -1,4 +1,8 @@
 #searchBar {
     margin-left: 20px;
     width: 100%;
+    border: 1px solid rgb(26, 0, 97);
+    border-radius: 5px;
+    padding-left: 10px;
+    font-size: 1.2em;
 }

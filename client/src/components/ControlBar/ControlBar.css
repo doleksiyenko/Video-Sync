@@ -1,0 +1,14 @@
+#controlBar {
+    background-color: rgb(241, 241, 241);
+    margin-top: 10px;
+    border-radius: 5px;
+}
+
+#customRange1 {
+    height: 10px;
+    width: 95%;
+}
+
+#playpause {
+    width: 5%;
+}

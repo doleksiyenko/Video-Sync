@@ -8,6 +8,7 @@ import queryString from "query-string";
 import ChatWindow from "../ChatWindow/ChatWindow";
 import VideoPlayer from "../VideoPlayer/VideoPlayer";
 import SearchBar from "../SearchBar/SearchBar";
+import ControlBar from "../ControlBar/ControlBar";
 
 let socket;
 
@@ -73,6 +74,7 @@ const VideoSync = ({ location }) => {
                         changeVideo={changeVideo}
                     ></SearchBar>
                     <VideoPlayer vidId={vidId}></VideoPlayer>
+                    <ControlBar></ControlBar>
                 </div>
                 <ChatWindow
                     inputMessage={inputMessage}
