@@ -6,6 +6,7 @@ import "./VideoSync.css";
 import io from "socket.io-client";
 import queryString from "query-string";
 import ChatWindow from "../ChatWindow/ChatWindow";
+import VideoPlayer from "../VideoPlayer/VideoPlayer";
 
 let socket;
 
@@ -13,6 +14,7 @@ const VideoSync = ({ location }) => {
     const serverLocation = "localhost:5000";
     let [messages, setMessages] = useState([]);
     let [inputMessage, setInputMessage] = useState("");
+    let [vidId, setVidId] = useState("ZTFTngOG2bg");
 
     useEffect(() => {
         let user = queryString.parse(location.search);
@@ -44,14 +46,17 @@ const VideoSync = ({ location }) => {
     };
 
     return (
-        <div id="sync-body">
+        <div>
             <h1 style={{ margin: 20 }}>Video Sync</h1>
-            <ChatWindow
-                inputMessage={inputMessage}
-                setInputMessage={setInputMessage}
-                sendMessage={sendMessage}
-                messages={messages}
-            ></ChatWindow>
+            <div id="sync-body">
+                <VideoPlayer vidId={vidId}></VideoPlayer>
+                <ChatWindow
+                    inputMessage={inputMessage}
+                    setInputMessage={setInputMessage}
+                    sendMessage={sendMessage}
+                    messages={messages}
+                ></ChatWindow>
+            </div>
         </div>
     );
 };
