@@ -1,17 +1,17 @@
 import React from "react";
 import ReactPlayer from "react-player";
 
-import "./VideoPlayer";
+import "./VideoPlayer.css";
 
-const YTPlayer = (vidId) => {
+const YTPlayer = ({ vidId }) => {
     return (
-        <div id="youtubePlayer">
+        <div id="videoPlayer">
             {ReactPlayer.canPlay(`https://www.youtube.com/watch?v=${vidId}`) ? (
                 // if the video can be found, play that video
                 <ReactPlayer
                     url={`https://www.youtube.com/watch?v=${vidId}`}
-                    width={640}
-                    height={480}
+                    width="100%"
+                    height="100%"
                     controls={true}
                     style={{ margin: 20 }}
                 ></ReactPlayer>
@@ -19,8 +19,8 @@ const YTPlayer = (vidId) => {
                 // if the video cannot be found, just play a default video
                 <ReactPlayer
                     url={`https://www.youtube.com/watch?v=ZTFTngOG2bg`}
-                    width={640}
-                    height={480}
+                    width="100%"
+                    height="100%"
                     controls={true}
                     style={{ margin: 20 }}
                 ></ReactPlayer>

@@ -3,3 +3,9 @@
     height: 100vh;
     display: flex;
 }
+
+#videoItem {
+    margin: 20px;
+    width: 60%;
+    height: 67%;
+}

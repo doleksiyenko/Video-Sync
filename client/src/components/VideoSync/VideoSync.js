@@ -7,6 +7,7 @@ import io from "socket.io-client";
 import queryString from "query-string";
 import ChatWindow from "../ChatWindow/ChatWindow";
 import VideoPlayer from "../VideoPlayer/VideoPlayer";
+import SearchBar from "../SearchBar/SearchBar";
 
 let socket;
 
@@ -15,6 +16,7 @@ const VideoSync = ({ location }) => {
     let [messages, setMessages] = useState([]);
     let [inputMessage, setInputMessage] = useState("");
     let [vidId, setVidId] = useState("ZTFTngOG2bg");
+    let [room, setRoom] = useState("");
 
     useEffect(() => {
         let user = queryString.parse(location.search);
@@ -22,6 +24,8 @@ const VideoSync = ({ location }) => {
         document.title = `Video Sync - Room ${user.room}`;
         socket = io(serverLocation);
         socket.emit("join", user.name, user.room);
+
+        setRoom(user.room);
 
         return () => {
             socket.emit("disconnect");
@@ -45,11 +49,20 @@ const VideoSync = ({ location }) => {
         }
     };
 
+    const changeVideo = (e) => {
+        console.log("new video id");
+    };
+
     return (
         <div>
-            <h1 style={{ margin: 20 }}>Video Sync</h1>
+            <h1 style={{ marginLeft: 40 }}>
+                Room <span style={{ color: "darkred" }}>{room}</span>
+            </h1>
             <div id="sync-body">
-                <VideoPlayer vidId={vidId}></VideoPlayer>
+                <div id="videoItem">
+                    <SearchBar setVidId={setVidId}></SearchBar>
+                    <VideoPlayer vidId={vidId}></VideoPlayer>
+                </div>
                 <ChatWindow
                     inputMessage={inputMessage}
                     setInputMessage={setInputMessage}
