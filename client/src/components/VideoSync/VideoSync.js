@@ -42,6 +42,13 @@ const VideoSync = ({ location }) => {
         });
     }, [messages]);
 
+    useEffect(() => {
+        socket.on("changeVideoLink", (vidLink) => {
+            console.log(`Using ${vidLink}.`);
+            setVidId(vidLink);
+        });
+    });
+
     const sendMessage = (e) => {
         if (e.target.value.trim() !== "") {
             socket.emit("sendMessage", e.target.value);
@@ -50,7 +57,8 @@ const VideoSync = ({ location }) => {
     };
 
     const changeVideo = (e) => {
-        console.log("new video id");
+        socket.emit("changeVideo", e.target.value.trim());
+        e.target.value = "";
     };
 
     return (
@@ -60,7 +68,10 @@ const VideoSync = ({ location }) => {
             </h1>
             <div id="sync-body">
                 <div id="videoItem">
-                    <SearchBar setVidId={setVidId}></SearchBar>
+                    <SearchBar
+                        setVidId={setVidId}
+                        changeVideo={changeVideo}
+                    ></SearchBar>
                     <VideoPlayer vidId={vidId}></VideoPlayer>
                 </div>
                 <ChatWindow

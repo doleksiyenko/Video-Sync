@@ -15,11 +15,11 @@ app.get("/", (req, res) => {
     res.send(`Express loaded on port ${port}`);
 });
 
+let currentRoomVideo = "";
+let user;
 // socket.io
-
 io.on("connection", (socket) => {
     // when the user sends a join request to the room
-    let user;
     socket.on("join", (name, room) => {
         // add a user to the room
         user = addUser(name, room, socket.id);
@@ -32,7 +32,7 @@ io.on("connection", (socket) => {
         );
         socket.broadcast
             .to(user.room)
-            .emit("message", `${user.name} has joined the session!`);
+            .emit("message", `"${user.name}" has joined the session!`);
         socket.join(user.room);
     });
 
@@ -41,6 +41,15 @@ io.on("connection", (socket) => {
         socket.broadcast
             .to(user.room)
             .emit("message", `${user.name}: ${message}`);
+    });
+
+    socket.on("changeVideo", (vidId) => {
+        if (user) {
+            console.log(`Received ${vidId}.`);
+            // change the video
+            socket.emit("changeVideoLink", vidId);
+            socket.broadcast.to(user.room).emit("changeVideoLink", vidId);
+        }
     });
 
     socket.on("disconnect", () => {
