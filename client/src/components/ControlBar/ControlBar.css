@@ -1,7 +1,9 @@
 #controlBar {
     background-color: rgb(241, 241, 241);
+    margin-left: 20px;
     margin-top: 10px;
     border-radius: 5px;
+    width: 100%;
 }
 
 #customRange1 {

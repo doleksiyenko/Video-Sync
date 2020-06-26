@@ -64,7 +64,7 @@ const VideoSync = ({ location }) => {
 
     return (
         <div>
-            <h1 style={{ marginLeft: 40 }}>
+            <h1 style={{ marginLeft: 40, marginTop: 20 }}>
                 Room <span style={{ color: "darkred" }}>{room}</span>
             </h1>
             <div id="sync-body">
