@@ -1,26 +1,30 @@
-import React, { useState } from "react";
+import React from "react";
 import Button from "react-bootstrap/Button";
 import { PlayFill, PauseFill } from "react-bootstrap-icons";
 import "./ControlBar.css";
 
-const ControlBar = ({ videoLength }) => {
-    let [status, setStatus] = useState(true);
-
-    const switchIcon = () => {
-        setStatus(!status);
+const ControlBar = ({ videoLength, videoPlaying, setVideoPlaying }) => {
+    const switchStatus = () => {
+        setVideoPlaying(!videoPlaying);
     };
 
     return (
         <div id="controlBar">
             {/* set the range from 0 to video length */}
-            <Button id="playpause" onClick={() => switchIcon()}>
-                {status === true ? (
+            <Button id="playpause" onClick={() => switchStatus()}>
+                {videoPlaying === false ? (
                     <PlayFill color="white"></PlayFill>
                 ) : (
                     <PauseFill color="white"></PauseFill>
                 )}
             </Button>
-            <input type="range" class="custom-range" id="customRange1"></input>
+            <input
+                type="range"
+                class="custom-range"
+                min={0}
+                max={videoLength}
+                id="customRange1"
+            ></input>
         </div>
     );
 };

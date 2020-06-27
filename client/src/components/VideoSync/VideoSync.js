@@ -14,10 +14,15 @@ let socket;
 
 const VideoSync = ({ location }) => {
     const serverLocation = "localhost:5000";
+    //general state
+    let [room, setRoom] = useState("");
+    // message field states
     let [messages, setMessages] = useState([]);
     let [inputMessage, setInputMessage] = useState("");
+    // states for the video player
     let [vidId, setVidId] = useState("ZTFTngOG2bg");
-    let [room, setRoom] = useState("");
+    let [videoPlaying, setVideoPlaying] = useState(false);
+    let [videoLength, setVideoLength] = useState(1);
 
     useEffect(() => {
         let user = queryString.parse(location.search);
@@ -50,6 +55,13 @@ const VideoSync = ({ location }) => {
         });
     });
 
+    useEffect(() => {
+        socket.on("sendVideoState", (state) => {
+            console.log(`Setting state to ${state}`);
+            setVideoPlaying(state);
+        });
+    });
+
     const sendMessage = (e) => {
         if (e.target.value.trim() !== "") {
             socket.emit("sendMessage", e.target.value);
@@ -60,6 +72,11 @@ const VideoSync = ({ location }) => {
     const changeVideo = (e) => {
         socket.emit("changeVideo", e.target.value.trim());
         e.target.value = "";
+    };
+
+    const sendVideoStatus = (state) => {
+        state ? setVideoPlaying(true) : setVideoPlaying(false);
+        socket.emit("changeVideoState", state);
     };
 
     return (
@@ -73,8 +90,16 @@ const VideoSync = ({ location }) => {
                         setVidId={setVidId}
                         changeVideo={changeVideo}
                     ></SearchBar>
-                    <VideoPlayer vidId={vidId}></VideoPlayer>
-                    <ControlBar></ControlBar>
+                    <VideoPlayer
+                        vidId={vidId}
+                        videoPlaying={videoPlaying}
+                        sendVideoStatus={sendVideoStatus}
+                    ></VideoPlayer>
+                    <ControlBar
+                        videoPlaying={videoPlaying}
+                        setVideoPlaying={setVideoPlaying}
+                        videoLength={videoLength}
+                    ></ControlBar>
                 </div>
                 <ChatWindow
                     inputMessage={inputMessage}

@@ -52,6 +52,10 @@ io.on("connection", (socket) => {
         }
     });
 
+    socket.on("changeVideoState", (state) => {
+        socket.broadcast.to(user.room).emit("sendVideoState", state);
+    });
+
     socket.on("disconnect", () => {
         // if the server has been reset and users were connected, the server will crash because user will
         // will be undefined.
