@@ -23,6 +23,7 @@ const VideoSync = ({ location }) => {
     let [vidId, setVidId] = useState("ZTFTngOG2bg");
     let [videoPlaying, setVideoPlaying] = useState(false);
     let [videoLength, setVideoLength] = useState(1);
+    let [videoProgress, setVideoProgress] = useState(0);
 
     useEffect(() => {
         let user = queryString.parse(location.search);
@@ -94,11 +95,14 @@ const VideoSync = ({ location }) => {
                         vidId={vidId}
                         videoPlaying={videoPlaying}
                         sendVideoStatus={sendVideoStatus}
+                        setVideoLength={setVideoLength}
+                        setVideoProgress={setVideoProgress}
                     ></VideoPlayer>
                     <ControlBar
                         videoPlaying={videoPlaying}
                         setVideoPlaying={setVideoPlaying}
                         videoLength={videoLength}
+                        videoProgress={videoProgress}
                     ></ControlBar>
                 </div>
                 <ChatWindow

@@ -3,7 +3,12 @@ import Button from "react-bootstrap/Button";
 import { PlayFill, PauseFill } from "react-bootstrap-icons";
 import "./ControlBar.css";
 
-const ControlBar = ({ videoLength, videoPlaying, setVideoPlaying }) => {
+const ControlBar = ({
+    videoLength,
+    videoPlaying,
+    setVideoPlaying,
+    videoProgress,
+}) => {
     const switchStatus = () => {
         setVideoPlaying(!videoPlaying);
     };
@@ -23,6 +28,7 @@ const ControlBar = ({ videoLength, videoPlaying, setVideoPlaying }) => {
                 class="custom-range"
                 min={0}
                 max={videoLength}
+                value={videoProgress}
                 id="customRange1"
             ></input>
         </div>

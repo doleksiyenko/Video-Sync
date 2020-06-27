@@ -1,10 +1,16 @@
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import ReactPlayer from "react-player";
 
 import "./VideoPlayer.css";
 
-const YTPlayer = ({ vidId, videoPlaying, sendVideoStatus }) => {
-    // const playerRef = useRef(null);
+const YTPlayer = ({
+    vidId,
+    videoPlaying,
+    sendVideoStatus,
+    setVideoLength,
+    setVideoProgress,
+}) => {
+    const playerRef = useRef(null);
 
     const playable = (link) => {
         if (ReactPlayer.canPlay(link)) {
@@ -14,10 +20,15 @@ const YTPlayer = ({ vidId, videoPlaying, sendVideoStatus }) => {
         }
     };
 
+    const duration = () => {
+        setVideoLength(playerRef.current.getDuration());
+    };
+
     return (
         <div id="videoPlayer">
             <ReactPlayer
-                // ref={}
+                ref={playerRef}
+                onStart={duration}
                 url={playable(`https://www.youtube.com/watch?v=${vidId}`)}
                 playing={videoPlaying}
                 width="100%"
@@ -25,6 +36,9 @@ const YTPlayer = ({ vidId, videoPlaying, sendVideoStatus }) => {
                 style={{ margin: 20 }}
                 onPlay={() => sendVideoStatus(true)}
                 onPause={() => sendVideoStatus(false)}
+                onProgress={(progress) =>
+                    setVideoProgress(progress.playedSeconds)
+                }
             ></ReactPlayer>
         </div>
     );
