@@ -43,6 +43,7 @@ io.on("connection", (socket) => {
         userRoom = getRoom(user.room);
         socket.emit("changeVideoLink", userRoom.playingVideo);
         socket.emit("seekVid", userRoom.videoPosition);
+        socket.emit("sendVideoState", userRoom.currentState);
 
         socket.join(user.room);
     });
@@ -66,6 +67,7 @@ io.on("connection", (socket) => {
 
     socket.on("changeVideoState", (state) => {
         socket.broadcast.to(user.room).emit("sendVideoState", state);
+        userRoom.currentState = state;
     });
 
     socket.on("updateLocation", (location) => {
