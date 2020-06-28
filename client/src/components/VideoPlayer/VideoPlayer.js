@@ -3,7 +3,7 @@ import ReactPlayer from "react-player";
 
 import "./VideoPlayer.css";
 
-// custom hook to use after intial render
+// custom hook to use after initial render
 const useDidMountEffect = (func, deps) => {
     const didMount = useRef(false);
 
