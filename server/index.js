@@ -7,6 +7,8 @@ const io = require("socket.io")(http);
 
 const { addUser, removeUser, getUser, getUsersInRoom } = require("./users");
 
+const { addRoom, getRoom, removeRoom } = require("./rooms");
+
 const port = process.env.PORT || 5000;
 
 app.use(cors());
@@ -15,8 +17,8 @@ app.get("/", (req, res) => {
     res.send(`Express loaded on port ${port}`);
 });
 
-let currentRoomVideo = "";
 let user;
+let userRoom;
 // socket.io
 io.on("connection", (socket) => {
     // when the user sends a join request to the room
@@ -24,7 +26,6 @@ io.on("connection", (socket) => {
         // add a user to the room
         user = addUser(name, room, socket.id);
         console.log(`${user.name} has connected to ${user.room}.`);
-        console.log(user);
         // emit a message to the room that the user has joined. Show this in the chat window.
         socket.emit(
             "message",
@@ -33,6 +34,16 @@ io.on("connection", (socket) => {
         socket.broadcast
             .to(user.room)
             .emit("message", `"${user.name}" has joined the session!`);
+
+        // if the room doesn't exist yet, create the room
+        if (!getRoom(user.room)) {
+            addRoom(user.room);
+        }
+
+        userRoom = getRoom(user.room);
+        socket.emit("changeVideoLink", userRoom.playingVideo);
+        socket.emit("seekVid", userRoom.videoPosition);
+
         socket.join(user.room);
     });
 
@@ -49,6 +60,7 @@ io.on("connection", (socket) => {
             // change the video
             socket.emit("changeVideoLink", vidId);
             socket.broadcast.to(user.room).emit("changeVideoLink", vidId);
+            userRoom.playingVideo = vidId;
         }
     });
 
@@ -56,9 +68,13 @@ io.on("connection", (socket) => {
         socket.broadcast.to(user.room).emit("sendVideoState", state);
     });
 
+    socket.on("updateLocation", (location) => {
+        userRoom.videoPosition = location;
+    });
     socket.on("seekRequest", (location) => {
         socket.emit("seekVid", location);
         socket.broadcast.to(user.room).emit("seekVid", location);
+        userRoom.videoPosition = location;
     });
 
     socket.on("disconnect", () => {
@@ -66,6 +82,13 @@ io.on("connection", (socket) => {
         // will be undefined.
         if (user) {
             removeUser(socket.id);
+            // when the last user disconnects from a room, delete the room from "rooms" list
+            // so that the preferences of the room are reset.
+            const users = getUsersInRoom(user.room);
+            if (users.length === 0) {
+                removeRoom(user.room);
+            }
+            // emit to other users that this socket has disconnected
             console.log(`${user.name} has disconnected from ${user.room}`);
             socket.broadcast
                 .to(user.room)

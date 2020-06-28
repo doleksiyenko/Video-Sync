@@ -1,13 +1,17 @@
 let users = [];
 
 addUser = (name, room, id) => {
+    // TODO: make sure that the user name is unique.
     // add a user to their room
     let userName = name.trim();
     let userRoom = room.trim();
 
+    // each user begins with a default video link which can be updated
     user = {
         name: userName,
         room: userRoom,
+        playingVideo: "https://www.youtube.com/watch?v=ZTFTngOG2bg",
+        videoPosition: 0,
         id,
     };
 
@@ -25,4 +29,9 @@ getUser = (id) => users.find((user) => user.id === id);
 
 getUsersInRoom = (room) => users.filter((user) => user.room === room);
 
-module.exports = { addUser, removeUser, getUser, getUsersInRoom };
+module.exports = {
+    addUser,
+    removeUser,
+    getUser,
+    getUsersInRoom,
+};
