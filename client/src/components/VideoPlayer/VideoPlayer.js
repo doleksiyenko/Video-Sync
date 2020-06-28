@@ -1,7 +1,17 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import ReactPlayer from "react-player";
 
 import "./VideoPlayer.css";
+
+// custom hook to use after intial render
+const useDidMountEffect = (func, deps) => {
+    const didMount = useRef(false);
+
+    useEffect(() => {
+        if (didMount.current) func();
+        else didMount.current = true;
+    }, deps);
+};
 
 const YTPlayer = ({
     vidId,
@@ -9,6 +19,7 @@ const YTPlayer = ({
     sendVideoStatus,
     setVideoLength,
     setVideoProgress,
+    seek,
 }) => {
     const playerRef = useRef(null);
 
@@ -19,27 +30,33 @@ const YTPlayer = ({
             return `https://www.youtube.com/watch?v=ZTFTngOG2bg`;
         }
     };
-
     const duration = () => {
+        console.log(playerRef);
         setVideoLength(playerRef.current.getDuration());
     };
 
+    useDidMountEffect(() => {
+        playerRef.current.seekTo(seek, "seconds");
+    }, [seek]);
+
     return (
         <div id="videoPlayer">
-            <ReactPlayer
-                ref={playerRef}
-                onStart={duration}
-                url={playable(`https://www.youtube.com/watch?v=${vidId}`)}
-                playing={videoPlaying}
-                width="100%"
-                height="100%"
-                style={{ margin: 20 }}
-                onPlay={() => sendVideoStatus(true)}
-                onPause={() => sendVideoStatus(false)}
-                onProgress={(progress) =>
-                    setVideoProgress(progress.playedSeconds)
-                }
-            ></ReactPlayer>
+            <div id="videoPlayer">
+                <ReactPlayer
+                    ref={playerRef}
+                    onStart={duration}
+                    url={playable(`https://www.youtube.com/watch?v=${vidId}`)}
+                    playing={videoPlaying}
+                    width="100%"
+                    height="100%"
+                    style={{ margin: 20 }}
+                    onPlay={() => sendVideoStatus(true)}
+                    onPause={() => sendVideoStatus(false)}
+                    onProgress={(progress) =>
+                        setVideoProgress(progress.playedSeconds)
+                    }
+                ></ReactPlayer>
+            </div>
         </div>
     );
 };

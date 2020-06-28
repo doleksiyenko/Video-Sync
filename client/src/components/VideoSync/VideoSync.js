@@ -24,6 +24,7 @@ const VideoSync = ({ location }) => {
     let [videoPlaying, setVideoPlaying] = useState(false);
     let [videoLength, setVideoLength] = useState(1);
     let [videoProgress, setVideoProgress] = useState(0);
+    let [seek, setSeek] = useState(0);
 
     useEffect(() => {
         let user = queryString.parse(location.search);
@@ -63,6 +64,12 @@ const VideoSync = ({ location }) => {
         });
     });
 
+    useEffect(() => {
+        socket.on("seekVid", (location) => {
+            setSeek(location);
+        });
+    });
+
     const sendMessage = (e) => {
         if (e.target.value.trim() !== "") {
             socket.emit("sendMessage", e.target.value);
@@ -78,6 +85,10 @@ const VideoSync = ({ location }) => {
     const sendVideoStatus = (state) => {
         state ? setVideoPlaying(true) : setVideoPlaying(false);
         socket.emit("changeVideoState", state);
+    };
+
+    const emitSeekVideo = (location) => {
+        socket.emit("seekRequest", location);
     };
 
     return (
@@ -97,12 +108,14 @@ const VideoSync = ({ location }) => {
                         sendVideoStatus={sendVideoStatus}
                         setVideoLength={setVideoLength}
                         setVideoProgress={setVideoProgress}
+                        seek={seek}
                     ></VideoPlayer>
                     <ControlBar
                         videoPlaying={videoPlaying}
                         setVideoPlaying={setVideoPlaying}
                         videoLength={videoLength}
                         videoProgress={videoProgress}
+                        emitSeekVideo={emitSeekVideo}
                     ></ControlBar>
                 </div>
                 <ChatWindow

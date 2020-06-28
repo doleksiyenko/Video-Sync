@@ -56,6 +56,11 @@ io.on("connection", (socket) => {
         socket.broadcast.to(user.room).emit("sendVideoState", state);
     });
 
+    socket.on("seekRequest", (location) => {
+        socket.emit("seekVid", location);
+        socket.broadcast.to(user.room).emit("seekVid", location);
+    });
+
     socket.on("disconnect", () => {
         // if the server has been reset and users were connected, the server will crash because user will
         // will be undefined.

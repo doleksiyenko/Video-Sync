@@ -8,6 +8,7 @@ const ControlBar = ({
     videoPlaying,
     setVideoPlaying,
     videoProgress,
+    emitSeekVideo,
 }) => {
     const switchStatus = () => {
         setVideoPlaying(!videoPlaying);
@@ -25,10 +26,11 @@ const ControlBar = ({
             </Button>
             <input
                 type="range"
-                class="custom-range"
+                className="custom-range"
                 min={0}
                 max={videoLength}
                 value={videoProgress}
+                onChange={(e) => emitSeekVideo(e.target.value)}
                 id="customRange1"
             ></input>
         </div>
