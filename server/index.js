@@ -13,6 +13,9 @@ const port = process.env.PORT || 5000;
 
 app.use(cors());
 
+app.post("/room", (req, res) => {
+    res.json(req.body);
+});
 app.get("/", (req, res) => {
     res.send(`Express loaded on port ${port}`);
 });
@@ -48,7 +51,6 @@ io.on("connection", (socket) => {
         socket.broadcast
             .to(user.room)
             .emit("receiveUsersInSession", getUsersInRoom(user.room));
-        console.log(user);
         socket.join(user.room);
     });
 
@@ -58,7 +60,6 @@ io.on("connection", (socket) => {
         socket.broadcast
             .to(user.room)
             .emit("message", `${user.name}: ${message}`);
-        console.log(user);
     });
 
     socket.on("changeVideo", (vidId) => {

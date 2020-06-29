@@ -1,3 +1,5 @@
+const { nanoid } = require("nanoid");
+
 let users = [];
 
 addUser = (name, room, id) => {
@@ -6,6 +8,10 @@ addUser = (name, room, id) => {
     let userName = name.trim();
     let userRoom = room.trim();
 
+    const usersInRoom = getUsersInRoom(room);
+    if (usernameInRoom(name, usersInRoom)) {
+        userName = `${userName}-${nanoid(4)}`;
+    }
     // each user begins with a default video link which can be updated
     user = {
         name: userName,
@@ -24,6 +30,9 @@ removeUser = (id) => {
 };
 
 getUser = (id) => users.find((user) => user.id === id);
+
+usernameInRoom = (name, roomUsers) =>
+    roomUsers.find((user) => user.name === name);
 
 getUsersInRoom = (room) => users.filter((user) => user.room === room);
 
