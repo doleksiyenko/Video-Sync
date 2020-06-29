@@ -9,6 +9,7 @@ import ChatWindow from "../ChatWindow/ChatWindow";
 import VideoPlayer from "../VideoPlayer/VideoPlayer";
 import SearchBar from "../SearchBar/SearchBar";
 import ControlBar from "../ControlBar/ControlBar";
+import UsersBar from "../UsersBar/UsersBar";
 
 let socket;
 
@@ -16,6 +17,7 @@ const VideoSync = ({ location }) => {
     const serverLocation = "localhost:5000";
     //general state
     let [room, setRoom] = useState("");
+    let [usersInSession, setUsersInSession] = useState([]);
     // message field states
     let [messages, setMessages] = useState([]);
     let [inputMessage, setInputMessage] = useState("");
@@ -46,27 +48,31 @@ const VideoSync = ({ location }) => {
         socket.on("message", (message) => {
             setMessages([...messages, message]);
             // this is to prevent multiple listeners forming for every single message change
-            socket.off();
+            socket.off("message");
         });
     }, [messages]);
 
     useEffect(() => {
-        socket.on("changeVideoLink", (vidLink) => {
-            console.log(`Using ${vidLink}.`);
-            setVidId(vidLink);
-        });
-    });
+        socket.emit("updateLocation", videoProgress);
+    }, [videoProgress]);
 
     useEffect(() => {
-        socket.on("sendVideoState", (state) => {
-            console.log(`Setting state to ${state}`);
-            setVideoPlaying(state);
+        socket.on("receiveUsersInSession", (users) => {
+            setUsersInSession(users);
         });
-    });
+    }, [usersInSession]);
 
     useEffect(() => {
         socket.on("seekVid", (location) => {
             setSeek(location);
+        });
+        socket.on("sendVideoState", (state) => {
+            console.log(`Setting state to ${state}`);
+            setVideoPlaying(state);
+        });
+        socket.on("changeVideoLink", (vidLink) => {
+            console.log(`Using ${vidLink}.`);
+            setVidId(vidLink);
         });
     });
 
@@ -96,6 +102,7 @@ const VideoSync = ({ location }) => {
             <h1 style={{ marginLeft: 40, marginTop: 20 }}>
                 Room <span style={{ color: "darkred" }}>{room}</span>
             </h1>
+            <UsersBar usersInSession={usersInSession}></UsersBar>
             <div id="sync-body">
                 <div id="videoItem">
                     <SearchBar
