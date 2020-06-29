@@ -97,6 +97,11 @@ io.on("connection", (socket) => {
             if (users.length === 0) {
                 removeRoom(user.room);
             }
+            // remove the user from the UserBar
+            socket.emit("receiveUsersInSession", getUsersInRoom(user.room));
+            socket.broadcast
+                .to(user.room)
+                .emit("receiveUsersInSession", getUsersInRoom(user.room));
             // emit to other users that this socket has disconnected
             console.log(`${user.name} has disconnected from ${user.room}`);
             socket.broadcast
