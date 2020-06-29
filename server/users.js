@@ -10,8 +10,6 @@ addUser = (name, room, id) => {
     user = {
         name: userName,
         room: userRoom,
-        playingVideo: "https://www.youtube.com/watch?v=ZTFTngOG2bg",
-        videoPosition: 0,
         id,
     };
 

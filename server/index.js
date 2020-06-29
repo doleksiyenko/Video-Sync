@@ -44,15 +44,21 @@ io.on("connection", (socket) => {
         socket.emit("changeVideoLink", userRoom.playingVideo);
         socket.emit("seekVid", userRoom.videoPosition);
         socket.emit("sendVideoState", userRoom.currentState);
-
+        socket.emit("receiveUsersInSession", getUsersInRoom(user.room));
+        socket.broadcast
+            .to(user.room)
+            .emit("receiveUsersInSession", getUsersInRoom(user.room));
+        console.log(user);
         socket.join(user.room);
     });
 
     socket.on("sendMessage", (message) => {
+        user = getUser(socket.id);
         socket.emit("message", `You: ${message}`);
         socket.broadcast
             .to(user.room)
             .emit("message", `${user.name}: ${message}`);
+        console.log(user);
     });
 
     socket.on("changeVideo", (vidId) => {
@@ -82,6 +88,7 @@ io.on("connection", (socket) => {
     socket.on("disconnect", () => {
         // if the server has been reset and users were connected, the server will crash because user will
         // will be undefined.
+        user = getUser(socket.id);
         if (user) {
             removeUser(socket.id);
             // when the last user disconnects from a room, delete the room from "rooms" list
