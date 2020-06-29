@@ -3,7 +3,6 @@ const { nanoid } = require("nanoid");
 let users = [];
 
 addUser = (name, room, id) => {
-    // TODO: make sure that the user name is unique.
     // add a user to their room
     let userName = name.trim();
     let userRoom = room.trim();
