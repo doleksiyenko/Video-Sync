@@ -1,6 +1,7 @@
 # Video-Sync
 ## Try out the site here
 https://video-sync-dos.netlify.app
+(NOTE: The server is hosted on a free heroku server, and may take a while to respond! If the register/login buttons don't work, the server most likely hasn't loaded up yet.)
 ## Introduction
 Video Sync is a project working with React, NodeJS and Socket.io to create a website that allow you to sync videos from platforms such as YouTube and Facebook, allowing
 users to watch videos with friends!
